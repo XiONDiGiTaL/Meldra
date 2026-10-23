@@ -1,220 +1,114 @@
 # Meldra
 
-A browser-based multiplayer falling-block puzzle game centered on
-shared-board cooperation, competitive challenges, and sleek
-liquid-glass visuals.
+**Different colors. One shared fate.**
 
-> Different colors. One shared fate.
+Meldra is an independently developed browser-based falling-block puzzle game built around a shared arena. Its central idea is simple: two players shape the same evolving puzzle, where every placement can create an opportunity or a new challenge for the other player.
 
-## Overview
+The goal is to make cooperation part of the puzzle itself, supported by clear controls, a distinctive liquid-glass visual direction, and play that feels good on desktop and mobile.
 
-Meldra is being designed around a simple idea: separate players,
-distinct pieces, one shared challenge.
+> **Status:** Early development. This README describes the current vision, not a claim that every feature below is already implemented. The initial milestone is a playable two-player cooperative prototype.
 
-Players control falling pieces inside a common arena, coordinate
-placements, clear space, and work toward collective objectives.
-Each player has a chosen color and a secondary visual identifier,
-making individual contributions visible within the shared board.
+## The Core Idea
 
-The aim is an approachable puzzle game with responsive controls,
-meaningful teamwork, and a polished presentation that remains
-readable when the action intensifies.
+### One arena, shared consequences
 
-## Development Status
+Players control distinct falling pieces in a common play space. A placement changes the space available to both players, so timing, positioning, and communication matter. The intended experience is not simply two separate boards displayed side by side: the puzzle should respond to the players as a team.
 
-Meldra is in early development.
+### Teamwork that matters
 
-This README describes the project's intended direction, not a
-guarantee of currently available functionality. Mechanics, modes,
-technology choices, and visual details may change through testing.
+Meldra aims to reward coordinated setups, assists, recoveries, and collective progress, not just individual speed. Its rules will be developed around readable interactions and understandable outcomes, especially when both players act at once.
 
-Implemented features, setup instructions, and release information
-will be documented as they become available.
+### A distinct identity
 
-## Core Experience
+The game is being designed with its own rules, objectives, interface, scoring, visual language, and audio. Familiar falling-piece interactions can make the premise approachable, while the shared-board systems and original presentation give Meldra its own character.
 
-### One Shared Arena
+## Planned Game Modes
 
-Cooperation is the foundation of Meldra. Players must consider how
-their placements affect the space, opportunities, and challenges
-available to everyone else.
+The following modes are design proposals and may change as prototypes are tested.
 
-### Distinct Player Identity
+| Mode | Intended experience |
+| --- | --- |
+| **Together** | Two players cooperate in one arena, managing space and completing shared objectives. |
+| **Relay** | Players alternate placements and plan their next moves together. |
+| **Rift** | Cooperative encounters with changing objectives and AI-directed hazards. |
+| **Clash** | Team-versus-team competition, with each team managing a shared arena. |
+| **Duel** | Individual competitive play using Meldra's own rules. |
+| **Architect** | Objective-based puzzles with placement constraints and limited resources. |
+| **Endless** | A lower-pressure shared session focused on sustained play. |
 
-Players choose their own colors. Symbols, patterns, or outlines
-provide additional ownership cues so identification does not depend
-on color alone.
-
-### Collective Success
-
-The scoring direction emphasizes coordinated clears, useful setups,
-assists, and recoveries alongside individual execution.
-
-### Familiar Interactions, Independent Design
-
-Moving, rotating, and fitting falling pieces should be easy to
-understand. Meldra's arena, piece selection, cooperative systems,
-objectives, scoring, interface, and audiovisual presentation are
-to be developed as an independent design.
-
-## Planned Modes
-
-### Together
-
-A shared-board cooperative experience focused on coordination,
-space management, and escalating challenges.
-
-### Relay
-
-A more deliberate cooperative format in which players alternate
-placements and plan ahead together.
-
-### Rift
-
-Cooperative encounters featuring AI-directed hazards, changing
-objectives, and opportunities for coordinated recovery.
-
-### Clash
-
-Team-versus-team competition, with each team managing its own
-shared arena.
-
-### Duel
-
-Individual competitive play built around Meldra's core rules.
-
-### Architect
-
-Objective-based puzzles involving limited resources, placement
-constraints, and cooperative problem-solving.
-
-### Endless
-
-A lower-pressure shared experience focused on sustained play.
-
-These modes are proposals. The initial development priority is a
-clear, enjoyable two-player cooperative prototype.
-
-## Visual Direction
-
-Meldra's intended presentation combines:
-
-- A front-facing board with clear placement boundaries.
-- Dimensional blocks with restrained liquid-glass materials.
-- Stable silhouettes and precise movement.
-- Distinct player colors and secondary identifying marks.
-- Subtle lighting and original cooperative-clear effects.
-- Understated backgrounds that do not compete with gameplay.
-- Reduced-motion and reduced-effects options.
-
-Visual effects should explain events and celebrate teamwork,
-not obscure pieces, hazards, or player intent.
+The first priority is to establish a fun, understandable two-player cooperative prototype before expanding the mode list.
 
 ## Design Principles
 
-### Cooperation First
+- **Cooperation first:** reward preparation, assistance, and shared success.
+- **Readability before spectacle:** pieces, previews, hazards, and player ownership must remain easy to distinguish.
+- **Predictable shared control:** simultaneous actions need clear collision rules and consistent conflict resolution.
+- **Recovery over frustration:** where practical, mistakes should create problems teammates can help solve.
+- **Accessibility by design:** use color alongside symbols, patterns, or outlines; provide options to reduce motion and visual effects.
+- **Originality through meaningful choices:** develop Meldra's identity through its mechanics and presentation, not just renamed elements or replacement textures.
 
-Build systems that reward preparation, assistance, and shared
-success rather than encouraging teammates to compete for credit.
+## Visual and Audio Direction
 
-### Readability Before Spectacle
+Meldra's intended art direction combines dimensional blocks, restrained liquid-glass materials, crisp silhouettes, subtle lighting, and a calm interface that keeps the puzzle in focus. Player identity should remain legible without relying on color alone. Effects should communicate game events and celebrate teamwork without obscuring the board.
 
-Active pieces, settled pieces, previews, hazards, and ownership
-must remain distinguishable.
+Music, sound effects, interface elements, and visual effects will be created for Meldra or used under appropriate licenses. The final presentation will be refined through playtesting and performance checks rather than sacrificing readability for spectacle.
 
-### Predictable Shared Control
+## Development Status
 
-Simultaneous placement requires understandable collision rules,
-visible intent, and deterministic conflict resolution.
+Meldra is in early development. Mechanics, mode details, technical choices, and presentation may change as the prototype is tested.
 
-### Recovery Over Frustration
+The near-term focus is:
 
-Mistakes should create interesting problems and opportunities
-for assistance where possible, rather than immediately ending
-the session.
+1. Define and test the shared-board rules.
+2. Build a responsive, playable two-player cooperative prototype.
+3. Establish clear rendering, input, and game-state behavior.
+4. Test simultaneous actions, edge cases, accessibility, and performance.
+5. Expand into additional modes only after the core experience is working well.
 
-### Originality Through Design
+This section will be updated as features become playable. Planned ideas should not be read as implemented functionality.
 
-Develop a coherent identity through meaningful mechanical and
-creative decisions, not merely renamed features or replacement
-textures.
+## Development and Setup
 
-## Reference Analysis and Originality
+Installation and local run instructions will be documented once the application structure and development commands are established.
 
-The development process may include studying existing puzzle
-games to understand general gameplay and usability principles.
+As the project grows, development documentation is intended to include:
 
-Reference observations must be translated into independent design
-requirements. Reference analysis does not authorize copying
-proprietary code, extracted assets, distinctive audiovisual
-sequences, or third-party branding.
-
-Any proposed decompilation, binary analysis, asset extraction,
-or access-control circumvention requires separate review before
-proceeding.
-
-Neither reference analysis nor newly written code constitutes
-legal clearance for the resulting game.
-
-## Code, Assets, and Dependencies
-
-Project contributions must consist of original material or
-third-party material used with appropriate permission.
-
-- Do not submit copied proprietary source code.
-- Do not submit extracted, traced, or unlicensed game assets.
-- Record the source and license of external assets and dependencies.
-- Preserve required copyright notices and attribution.
-- Flag uncertain ownership or licensing before integration.
-- Do not assume generated assets are automatically cleared for use.
-
-Applicable third-party acknowledgments and license notices should
-be recorded in THIRD_PARTY_NOTICES.md.
-
-## Development Documentation
-
-As implementation progresses, the project should maintain:
-
-- DESIGN_DECISIONS.md — major gameplay and presentation decisions.
-- THIRD_PARTY_NOTICES.md — applicable external licenses and notices.
-- Development setup and environment-variable documentation.
+- `DESIGN_DECISIONS.md`: important gameplay and presentation decisions.
+- `THIRD_PARTY_NOTICES.md`: external components, licenses, and required notices.
+- Setup and environment-variable instructions.
 - Test instructions and known limitations.
-- Release notes distinguishing implemented work from planned work.
+- Release notes distinguishing completed work from planned work.
 
-## Running Locally
+Never commit credentials, private keys, production secrets, or private user data.
 
-Local setup instructions will be added once the application
-structure and development commands are established.
+## Originality and Third-Party Materials
 
-Do not commit credentials, private keys, production secrets,
-or private user data.
+Meldra is intended to be an original implementation and creative work. Studying other games may help identify broad usability principles or inspire independent design questions, but references are not permission to reproduce another game's protected expression.
+
+Project code, artwork, audio, fonts, and other assets must be original or used with appropriate permission. For third-party material:
+
+- Record its source and applicable license.
+- Preserve required copyright notices and attribution.
+- Check usage and redistribution terms before integration.
+- Flag uncertain ownership or licensing before use.
+- Do not assume AI-generated material is automatically free of rights or restrictions.
+
+Do not copy proprietary source code, extract or reuse unlicensed assets, reproduce distinctive audiovisual sequences, or use third-party branding without authorization. Any proposed decompilation, binary analysis, asset extraction, or circumvention of access controls requires separate review.
+
+These practices document the project's development approach; they are not a guarantee of legal clearance. The actual implementation and applicable law determine whether a particular use is permitted.
 
 ## Contributions
 
-Contribution terms have not yet been established.
-
-Please discuss proposed contributions before submitting code
-or assets. Do not contribute material you do not own or have
-permission to provide.
-
-No contributor license or ownership transfer should be assumed.
+Contribution terms have not yet been established. Please discuss proposed code or assets before submitting them, and only contribute material you own or have permission to provide. No contributor license or ownership transfer should be assumed.
 
 ## Rights and Permissions
 
-Copyright © 2026 XiØN | All rights reserved.
+Copyright © 2026 XiØN. All rights reserved.
 
-Except for third-party material and permissions arising under
-applicable law or the hosting platform's terms, no license is
-granted to use, copy, modify, redistribute, or commercially
-exploit Meldra's original code or assets without prior written
-permission.
+Except for third-party material and rights or permissions arising under applicable law or platform terms, no license is granted to use, copy, modify, redistribute, or commercially exploit Meldra's original code or assets without prior written permission. Third-party components remain subject to their respective licenses.
 
-Third-party components remain subject to their respective licenses.
+Public availability of this repository does not, by itself, make Meldra open-source software.
 
-Public availability of this repository does not make Meldra
-open-source software.
+## Independence
 
-## Affiliation
-
-Meldra is an independent project. No affiliation with, sponsorship
-by, or endorsement from another game publisher is claimed.
+Meldra is an independent project and is not affiliated with, sponsored by, or endorsed by another game publisher.
