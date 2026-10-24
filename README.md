@@ -40,6 +40,19 @@ address served by GitHub Pages.
 Solo modes run entirely in the browser. Online modes use a five-character room code; the host
 selects the mode and the guest inherits it.
 
+### Difficulty
+
+A single **Difficulty** control on the menu sets the pace for whatever you play next:
+
+| Pace | Fall starts at | Gravity floor | Feel |
+| --- | --- | --- | --- |
+| **Zen** | 1200 ms | 380 ms | Gentle ramp; a first match never turns frantic. |
+| **Normal** | 850 ms | 150 ms | The original designed pace. |
+| **Hard** | 320 ms | 110 ms | Fast from the first piece. |
+
+The choice is saved with the other preferences. In a room, the host's pace is shown in the lobby
+and used by the shared engine; the guest inherits it and sees the same value in the arena HUD.
+
 ### What makes Meldra different
 
 - **One arena, two owners.** Player one spawns on the left, player two on the right. A locked
@@ -192,14 +205,15 @@ The repo's Pages source is set to **GitHub Actions**, not a branch, so `dist/` i
 ## Tests
 
 ```bash
-npm test                # 51 unit tests: rules, Duel/Relay/Rift, wire format, i18n, music, aurora
-npm run test:e2e        # 15 Playwright tests: co-op, Duel, Relay, Rift, assorted modes, Supabase
+npm test                # 53 unit tests: rules, difficulty, Duel/Relay/Rift, wire format, i18n, music
+npm run test:e2e        # 16 Playwright tests: co-op, Duel, Relay, Rift, difficulty, Supabase
 ```
 
 The Playwright suite uses two isolated browser contexts and covers:
 
 - Create, join, ready, start, shared inputs, shared pause, defeat, rematch, and guest reconnection.
 - Duel mode selection, room inheritance, per-mode music routing, and synced boards.
+- A host selecting Zen and a guest inheriting the pace in the lobby and the HUD.
 - Relay turn handoff and Rift wave display.
 - Architect debris and Endless's no-target goal.
 - A real room over the production Supabase broadcast transport (`?net=supabase`).

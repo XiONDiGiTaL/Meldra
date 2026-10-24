@@ -4,8 +4,9 @@ import { nextPaletteId, paletteById } from '../palettes.js';
 import { drawPalettePreview } from '../render.js';
 import { el, toast } from '../ui.js';
 import { isRoomCode, normalizeRoomCode } from '../../shared/protocol.js';
+import { difficultyKey } from '../view.js';
 import { isOnlineMode } from '../../shared/types.js';
-import type { GameMode } from '../../shared/types.js';
+import { DIFFICULTIES, type Difficulty, type GameMode } from '../../shared/types.js';
 import { sfx } from '../audio.js';
 
 interface ModeSpec {
@@ -210,6 +211,46 @@ export function renderHome(api: AppApi): { node: HTMLElement; dispose: () => voi
     el('div', { class: 'mode-grid compact' }, ...extraModes.map(modeCard)),
   );
 
+  const difficultyButtons = new Map<Difficulty, HTMLButtonElement>();
+  const paintDifficulty = (value: Difficulty): void => {
+    for (const [difficulty, button] of difficultyButtons) {
+      button.setAttribute('aria-pressed', String(difficulty === value));
+    }
+  };
+  const difficultyRow = el(
+    'div',
+    { class: 'difficulty-row' },
+    el(
+      'div',
+      { class: 'difficulty-copy' },
+      el('span', { class: 'field-label', text: t('diff.label') }),
+      el('small', { class: 'tiny faint', text: t('diff.hint') }),
+    ),
+    el(
+      'div',
+      { class: 'seg', attrs: { role: 'group', 'aria-label': t('diff.label') } },
+      ...DIFFICULTIES.map((difficulty) => {
+        const button = el('button', {
+          attrs: {
+            type: 'button',
+            'data-difficulty': difficulty,
+            'aria-pressed': String(settings.difficulty === difficulty),
+          },
+          text: t(difficultyKey(difficulty)),
+          on: {
+            click: () => {
+              api.updateSettings({ difficulty });
+              paintDifficulty(difficulty);
+              sfx.ui();
+            },
+          },
+        });
+        difficultyButtons.set(difficulty, button);
+        return button;
+      }),
+    ),
+  );
+
   const joinPanel = el(
     'div',
     { class: 'join-panel' },
@@ -265,6 +306,7 @@ export function renderHome(api: AppApi): { node: HTMLElement; dispose: () => voi
       head,
       modeGrid,
       more,
+      difficultyRow,
       joinPanel,
       el('div', { class: 'home-foot' }, helpButton),
     ),

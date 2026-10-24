@@ -1,4 +1,4 @@
-import type { Cell, GameEvent, GameMode, Phase, Piece } from '../shared/types.js';
+import type { Cell, Difficulty, GameEvent, GameMode, Phase, Piece } from '../shared/types.js';
 import { RIFT_WAVE_TICKS } from '../shared/constants.js';
 
 export interface ViewPlayer {
@@ -9,6 +9,7 @@ export interface ViewPlayer {
 
 export interface ViewState {
   mode: GameMode;
+  difficulty: Difficulty;
   phase: Phase;
   countdown: number;
   board: (Cell | null)[];
@@ -30,6 +31,10 @@ export interface ViewState {
   localPlayer: number;
   paused: boolean;
   pauseMs: number;
+}
+
+export function difficultyKey(difficulty: Difficulty): 'diff.zen' | 'diff.normal' | 'diff.hard' {
+  return difficulty === 'zen' ? 'diff.zen' : difficulty === 'hard' ? 'diff.hard' : 'diff.normal';
 }
 
 export function riftWave(mode: GameMode, playTicks: number): number {

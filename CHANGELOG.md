@@ -3,6 +3,34 @@
 All notable changes to Meldra are recorded here. Dates use ISO 8601. "Verified" means the behaviour
 was executed in this environment; it does not mean a physical-device or production-hosting test.
 
+## 0.3.0 — 2026-10-24
+
+A calmer start for new players: every mode now has a Zen, Normal or Hard pace, chosen on the menu
+and carried into both solo runs and online rooms.
+
+### Added
+
+- **Difficulty selection:** a persisted Zen/Normal/Hard control on the main menu. Zen falls at
+  1200 ms and only ramps to 380 ms, Normal keeps the original 850 → 150 ms curve, and Hard opens at
+  320 ms and bottoms out at 110 ms. The pace applies to every mode and is remembered between visits.
+- **Online inheritance:** the host's pace travels in the welcome and lobby messages, appears in the
+  lobby's mode panel, and is used by the host's engine. Guests see the same pace in the lobby and in
+  the game HUD; protocol version is now 2 so a stale build cannot join with a different ruleset.
+- **HUD and guide:** a Pace stat in the arena and a "Choose your pace" guide section in both
+  languages.
+
+### Changed
+
+- Guest snapshots now carry the difficulty alongside the board, so a guest reconstructs the same
+  gravity curve without a second configuration channel.
+
+### Testing
+
+- `npm test` — 53 unit tests, including gravity ordering for the three paces and a snapshot
+  round trip that preserves the chosen difficulty.
+- `npm run test:e2e` — 16 Playwright tests, including a host picking Zen and a guest inheriting it
+  in the lobby and the HUD.
+
 ## 0.2.0 — 2026-10-23
 
 Static deployment, a real online transport, a compact menu, and the mode roster.

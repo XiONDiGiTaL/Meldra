@@ -404,6 +404,14 @@ simulation.
 bottom six rows, leaving the spawn area clear, and asks for ten cleared rows. Endless is the
 opposite pressure profile: no target, no objective, just survival and score.
 
+**Difficulty is one shared pace, not per-mode variants.** Playtests described the mid-match speed
+jump as the point new players fall off. Three gravity profiles change both the starting interval and
+the ramp: Zen 1200 → 380 ms, Normal 850 → 150 ms (the original curve), Hard 320 → 110 ms. One
+persisted choice keeps the menu short and lets a player change the whole session's feel in one tap
+instead of configuring seven modes. The online host owns the choice; it travels in the welcome,
+lobby and snapshot messages (protocol v2), so a guest can never simulate a different curve than the
+host and the lobby shows the inherited value before the match starts.
+
 **Clash is not shipped.** A four-player team mode needs a wider arena, four spawn lanes, and a
 four-player room protocol. Building it on top of the two-player relay would either break the
 shared-arena geometry or produce a mode that is not actually team-versus-team. It remains a design

@@ -1,5 +1,5 @@
 import { PROTOCOL_VERSION, ROOM_CODE_ALPHABET, ROOM_CODE_LENGTH } from './constants.js';
-import type { Action, GameMode, Snapshot } from './types.js';
+import type { Action, Difficulty, GameMode, Snapshot } from './types.js';
 
 export interface LobbyPlayer {
   id: string;
@@ -13,8 +13,17 @@ export interface LobbyPlayer {
 /** Messages exchanged between the host client and guests, relayed verbatim. */
 export type PeerMsg =
   | { t: 'hello'; v: number; pid: string; token?: string; name: string; palette: string }
-  | { t: 'welcome'; pid: string; you: string; token: string; room: string; mode: GameMode; players: LobbyPlayer[] }
-  | { t: 'lobby'; players: LobbyPlayer[]; mode: GameMode }
+  | {
+      t: 'welcome';
+      pid: string;
+      you: string;
+      token: string;
+      room: string;
+      mode: GameMode;
+      difficulty: Difficulty;
+      players: LobbyPlayer[];
+    }
+  | { t: 'lobby'; players: LobbyPlayer[]; mode: GameMode; difficulty: Difficulty }
   | { t: 'set'; name?: string; palette?: string; ready?: boolean }
   | { t: 'start' }
   | { t: 'rematch' }

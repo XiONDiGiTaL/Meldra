@@ -1,3 +1,4 @@
+import { isDifficulty, type Difficulty } from '../shared/types.js';
 import { clamp01, isAuroraSetting, isLobbyTheme, type AuroraSetting, type LobbyTheme } from './soundtrack.js';
 
 export type Lang = 'en' | 'tr';
@@ -11,6 +12,8 @@ export interface Settings {
   dragToMove: boolean;
   /** The one-time lobby explainer has been opened or dismissed. */
   seenHelp: boolean;
+  /** Chosen pace for the next match; online guests inherit the host's choice. */
+  difficulty: Difficulty;
   /** Music is independent of sound effects: both mute and volume. */
   music: boolean;
   musicVolume: number;
@@ -28,6 +31,7 @@ const DEFAULTS: Settings = {
   reduceMotion: false,
   dragToMove: true,
   seenHelp: false,
+  difficulty: 'normal',
   music: true,
   musicVolume: 0.65,
   lobbyTheme: 'afterHours',
@@ -54,6 +58,7 @@ export function loadSettings(): Settings {
     const parsed = raw ? (JSON.parse(raw) as Partial<Settings>) : {};
     cache = { ...DEFAULTS, ...parsed };
     if (cache.lang !== 'en' && cache.lang !== 'tr') cache.lang = 'auto';
+    if (!isDifficulty(cache.difficulty)) cache.difficulty = DEFAULTS.difficulty;
     if (typeof cache.music !== 'boolean') cache.music = DEFAULTS.music;
     cache.musicVolume =
       typeof cache.musicVolume === 'number' && Number.isFinite(cache.musicVolume)

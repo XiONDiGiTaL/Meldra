@@ -168,3 +168,34 @@ test('the static build joins a room over the production broadcast relay', async 
   await hostContext.close();
   await guestContext.close();
 });
+
+test('difficulty is picked on the menu and inherited by the guest', async ({ browser }) => {
+  const hostContext = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+  const guestContext = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+  const host = await hostContext.newPage();
+  const guest = await guestContext.newPage();
+
+  await host.goto('/');
+  await host.locator('[data-difficulty="zen"]').click();
+  await expect(host.locator('[data-difficulty="zen"]')).toHaveAttribute('aria-pressed', 'true');
+  await host.getByLabel('Display name').fill('Slow');
+  await host.locator('[data-mode="coop"]').click();
+  await expect(host.locator('.pace-row .pace-value')).toHaveText('Zen');
+  const code = (await host.locator('.room-code .code').textContent())?.trim() ?? '';
+
+  await guest.goto('/');
+  await guest.getByLabel('Display name').fill('Steady');
+  await guest.getByLabel('Join a room').fill(code);
+  await guest.getByRole('button', { name: 'Join', exact: true }).click();
+  await expect(guest.locator('.pace-row .pace-value')).toHaveText('Zen');
+
+  await guest.getByRole('button', { name: 'I’m ready' }).click();
+  await host.getByRole('button', { name: 'Start match' }).click();
+  await waitingForPlaying(host);
+  await waitingForPlaying(guest);
+  await expect(host.locator('.stat', { hasText: 'Pace' }).locator('.v')).toHaveText('Zen');
+  await expect(guest.locator('.stat', { hasText: 'Pace' }).locator('.v')).toHaveText('Zen');
+
+  await hostContext.close();
+  await guestContext.close();
+});

@@ -9,6 +9,7 @@ import { isSoloMode } from '../../shared/types.js';
 import type { Action, GameMode } from '../../shared/types.js';
 import type { ViewState } from '../view.js';
 import { toast } from '../ui.js';
+import { difficultyKey } from '../view.js';
 import { sfx } from '../audio.js';
 import { Aurora } from '../aurora.js';
 import { music } from '../music.js';
@@ -56,6 +57,7 @@ export function renderGame(api: AppApi, room: BaseRoom): { node: HTMLElement; di
     attrs: { style: 'font-size:13px;font-weight:600;line-height:1.4' },
     text: '—',
   });
+  const paceValue = el('div', { class: 'v', text: t(difficultyKey(room.difficulty)) });
 
   function goalText(mode: GameMode, current: ViewState): string {
     if (mode === 'versus') return t('game.versusGoal', { n: current.objective });
@@ -77,6 +79,7 @@ export function renderGame(api: AppApi, room: BaseRoom): { node: HTMLElement; di
   const meldStat = el('div', { class: 'stat' }, meldLabel, meldValue, oath);
   const linesStat = stat(t('game.lines'), linesValue);
   const goalStat = stat(t('game.goal'), goalValue);
+  const paceStat = stat(t('game.pace'), paceValue);
 
   const pauseButton = el('button', {
     class: 'btn small wide',
@@ -110,7 +113,18 @@ export function renderGame(api: AppApi, room: BaseRoom): { node: HTMLElement; di
     return el('div', { attrs: { style: 'margin-top:4px' } }, el('kbd', { text: keys }), ' ', label);
   }
 
-  const leftColumn = el('div', { class: 'game-left' }, scoreStat, meldStat, linesStat, goalStat, pauseButton, helpButton, controlsCard);
+  const leftColumn = el(
+    'div',
+    { class: 'game-left' },
+    scoreStat,
+    meldStat,
+    linesStat,
+    goalStat,
+    paceStat,
+    pauseButton,
+    helpButton,
+    controlsCard,
+  );
 
   function playerChip(isLocal: boolean): {
     root: HTMLElement;
@@ -634,6 +648,7 @@ export function renderGame(api: AppApi, room: BaseRoom): { node: HTMLElement; di
     }
     linesStat.style.display = solo || versus ? 'none' : '';
     linesValue.textContent = String(current.lines);
+    paceValue.textContent = t(difficultyKey(current.difficulty));
     if (relay && current.phase === 'playing') {
       goalValue.textContent =
         current.turn === localIndex

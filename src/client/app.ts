@@ -283,7 +283,7 @@ export class App implements AppApi {
       this.settings = saveSettings({ name });
     }
     const errors = { key: null as string | null };
-    const room = createHostRoom(name, this.settings.palette, mode, (key) => {
+    const room = createHostRoom(name, this.settings.palette, mode, this.settings.difficulty, (key) => {
       errors.key = key;
       toast(t(key as I18nKey), 'bad');
     });
@@ -322,7 +322,7 @@ export class App implements AppApi {
       this.room = null;
       previous.leave();
     }
-    const room = createSoloRoom(isSoloMode(mode) ? mode : 'solo');
+    const room = createSoloRoom(isSoloMode(mode) ? mode : 'solo', this.settings.difficulty);
     this.room = room;
     const errors = { key: null as string | null };
     this.bindRoom(room, errors);
@@ -339,6 +339,7 @@ export class App implements AppApi {
 
     body.append(el('p', { class: 'small', text: t('help.intro') }));
     addSection(t('help.modesTitle'), t('help.modesBody'));
+    addSection(t('help.difficultyTitle'), t('help.difficultyBody'));
     addSection(t('help.arenaTitle'), t('help.arenaBody'));
     addSection(t('help.meldTitle'), t('help.meldBody'));
     addSection(t('help.dangerTitle'), t('help.dangerBody'));

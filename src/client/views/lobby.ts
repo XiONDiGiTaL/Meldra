@@ -4,6 +4,7 @@ import { inviteLink } from '../net.js';
 import { t } from '../i18n.js';
 import { nextPaletteId, paletteById } from '../palettes.js';
 import { drawPalettePreview } from '../render.js';
+import { difficultyKey } from '../view.js';
 import { controlGuide, copyText, el, isCoarsePointer, pill, toast } from '../ui.js';
 import type { LobbyPlayer } from '../../shared/protocol.js';
 import type { GameMode } from '../../shared/types.js';
@@ -189,6 +190,12 @@ export function renderLobby(api: AppApi, room: BaseRoom): { node: HTMLElement; d
       ),
       el('h3', { text: t(info.label) }),
       el('p', { class: 'small', text: t(info.desc) }),
+      el(
+        'div',
+        { class: 'pace-row' },
+        el('span', { class: 'field-label', text: t('lobby.difficulty') }),
+        el('span', { class: 'pace-value', text: t(difficultyKey(room.difficulty)) }),
+      ),
       el('div', { class: 'divider' }),
     ];
 

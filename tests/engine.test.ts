@@ -7,6 +7,8 @@ import {
   createGame,
   decodeBoard,
   encodeBoard,
+  gravityTicks,
+  snapshotToState,
   spawnPiece,
   stateHash,
   toSnapshot,
@@ -311,6 +313,27 @@ describe('failure and determinism', () => {
 
   it('advances at the declared tick rate', () => {
     expect(TICK_MS).toBe(50);
+  });
+});
+
+describe('difficulty', () => {
+  it('slows Zen and starts Hard faster than the designed pace', () => {
+    const zen = createGame('solo', 11, 'zen');
+    const normal = createGame('solo', 11, 'normal');
+    const hard = createGame('solo', 11, 'hard');
+    expect(gravityTicks(zen)).toBeGreaterThan(gravityTicks(normal));
+    expect(gravityTicks(normal)).toBeGreaterThan(gravityTicks(hard));
+
+    for (const state of [zen, normal, hard]) state.playTicks = 60 * 20; // one minute
+    expect(gravityTicks(zen)).toBeGreaterThan(gravityTicks(normal));
+    expect(gravityTicks(normal)).toBeGreaterThan(gravityTicks(hard));
+  });
+
+  it('defaults to Normal and survives the snapshot round trip', () => {
+    expect(createGame('solo', 3).difficulty).toBe('normal');
+    const state = createGame('coop', 3, 'hard');
+    const restored = snapshotToState(toSnapshot(state, [0, 0]), 'coop');
+    expect(restored.difficulty).toBe('hard');
   });
 });
 

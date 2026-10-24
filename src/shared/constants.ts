@@ -1,3 +1,5 @@
+import type { Difficulty } from './types.js';
+
 /** Shared tuning values. The engine has no clock of its own: every duration is in ticks. */
 
 export const COLS = 10;
@@ -36,6 +38,19 @@ export const BASE_GRAVITY_MS = 850;
 export const MIN_GRAVITY_MS = 150;
 export const GRAVITY_RAMP_MS_PER_SEC = 14;
 
+/**
+ * Gravity per difficulty. Normal is the original pace; Zen slows both the fall and the ramp so
+ * a first match never turns frantic, and Hard opens at speed instead of building toward it.
+ */
+export const DIFFICULTY_PROFILES: Record<
+  Difficulty,
+  { baseMs: number; minMs: number; rampMsPerSec: number }
+> = {
+  zen: { baseMs: 1200, minMs: 380, rampMsPerSec: 6 },
+  normal: { baseMs: BASE_GRAVITY_MS, minMs: MIN_GRAVITY_MS, rampMsPerSec: GRAVITY_RAMP_MS_PER_SEC },
+  hard: { baseMs: 320, minMs: 110, rampMsPerSec: 18 },
+};
+
 /** Reconnect grace window before a co-op match is abandoned. */
 export const DISCONNECT_GRACE_MS = 30_000;
 
@@ -44,4 +59,5 @@ export const MELD_BONUS = 200;
 
 export const ROOM_CODE_ALPHABET = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
 export const ROOM_CODE_LENGTH = 5;
-export const PROTOCOL_VERSION = 1;
+// v2 adds the host-selected difficulty to welcome, lobby and snapshot messages.
+export const PROTOCOL_VERSION = 2;

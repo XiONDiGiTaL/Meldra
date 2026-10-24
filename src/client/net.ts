@@ -8,7 +8,7 @@ import {
 } from '../shared/engine.js';
 import { makeRoomCode, normalizeRoomCode, versionMatches } from '../shared/protocol.js';
 import type { LobbyPlayer, PeerMsg, RelayServerMsg } from '../shared/protocol.js';
-import type { Action, GameMode, GameState } from '../shared/types.js';
+import type { Action, Difficulty, GameMode, GameState } from '../shared/types.js';
 import { countdownSeconds, riftWave } from './view.js';
 import type { ViewState } from './view.js';
 import { loadSettings } from './settings.js';
@@ -358,6 +358,7 @@ export abstract class BaseRoom {
   abstract readonly role: RoomRole;
   readonly selfId = randomId();
   mode: GameMode = 'coop';
+  difficulty: Difficulty = 'normal';
   players: LobbyPlayer[] = [];
   status: RoomStatus = 'connecting';
   view: ViewState | null = null;
@@ -413,6 +414,7 @@ function buildView(
 ): ViewState {
   return {
     mode: state.mode,
+    difficulty: state.difficulty,
     phase: state.phase,
     countdown: countdownSeconds(state.phase, state.phaseTick, COUNTDOWN_TICKS),
     board: state.board,
@@ -463,9 +465,17 @@ export class HostRoom extends BaseRoom {
   private lastGuestSeen = 0;
   private selfName: string;
 
-  constructor(code: string, name: string, palette: string, mode: GameMode, private onFatal: (key: string) => void) {
+  constructor(
+    code: string,
+    name: string,
+    palette: string,
+    mode: GameMode,
+    difficulty: Difficulty,
+    private onFatal: (key: string) => void,
+  ) {
     super(code);
     this.mode = mode;
+    this.difficulty = difficulty;
     this.selfName = name.trim() || 'Player';
     this.players = [
       { id: this.selfId, name: this.selfName, palette, ready: true, host: true, connected: true },
@@ -518,7 +528,12 @@ export class HostRoom extends BaseRoom {
   }
 
   private broadcastLobby(): void {
-    this.relay.send({ t: 'lobby', players: this.players, mode: this.mode });
+    this.relay.send({
+      t: 'lobby',
+      players: this.players,
+      mode: this.mode,
+      difficulty: this.difficulty,
+    });
     this.emit('lobby', this.players);
   }
 
@@ -639,6 +654,7 @@ export class HostRoom extends BaseRoom {
       token,
       room: this.code,
       mode: this.mode,
+      difficulty: this.difficulty,
       players: this.players,
     });
   }
@@ -771,7 +787,7 @@ export class HostRoom extends BaseRoom {
   private startMatch(): void {
     if (this.guest) this.guest.ready = false;
     this.view = null;
-    this.game = createGame(this.mode, (Math.random() * 0xffffffff) >>> 0);
+    this.game = createGame(this.mode, (Math.random() * 0xffffffff) >>> 0, this.difficulty);
     this.seqs = [0, 0];
     this.paused = false;
     this.pauseReason = null;
@@ -956,6 +972,7 @@ export class GuestRoom extends BaseRoom {
         }
         this.lastHostMessage = Date.now();
         this.mode = message.mode;
+        this.difficulty = message.difficulty ?? 'normal';
         this.token = message.token;
         writeRoomToken(this.code, message.token);
         this.setStatus('online');
@@ -971,6 +988,7 @@ export class GuestRoom extends BaseRoom {
       case 'lobby': {
         this.players = message.players;
         this.mode = message.mode;
+        this.difficulty = message.difficulty ?? 'normal';
         this.emit('lobby', this.players);
         return;
       }
@@ -1130,14 +1148,15 @@ export class SoloRoom extends BaseRoom {
   private seq = 0;
   override code = 'SOLO';
 
-  constructor(name: string, palette: string, mode: GameMode = 'solo') {
+  constructor(name: string, palette: string, mode: GameMode = 'solo', difficulty: Difficulty = 'normal') {
     super('SOLO');
     this.mode = mode;
+    this.difficulty = difficulty;
     this.localPlayer = 0;
     this.players = [
       { id: this.selfId, name, palette, ready: true, host: true, connected: true },
     ];
-    this.game = createGame(mode, (Math.random() * 0xffffffff) >>> 0);
+    this.game = createGame(mode, (Math.random() * 0xffffffff) >>> 0, difficulty);
     this.status = 'online';
     this.emit('start');
     this.broadcast();
@@ -1191,7 +1210,7 @@ export class SoloRoom extends BaseRoom {
     this.rematch();
   }
   rematch(): void {
-    this.game = createGame(this.mode, (Math.random() * 0xffffffff) >>> 0);
+    this.game = createGame(this.mode, (Math.random() * 0xffffffff) >>> 0, this.difficulty);
     this.paused = false;
     this.seq = 0;
     this.broadcast();
@@ -1229,10 +1248,11 @@ export function createHostRoom(
   name: string,
   palette: string,
   mode: GameMode,
+  difficulty: Difficulty,
   onFatal: (key: string) => void,
   code = makeRoomCode(),
 ): HostRoom {
-  return new HostRoom(code, name, palette, mode, onFatal);
+  return new HostRoom(code, name, palette, mode, difficulty, onFatal);
 }
 
 export function createGuestRoom(
@@ -1244,7 +1264,7 @@ export function createGuestRoom(
   return new GuestRoom(normalizeRoomCode(code), name, palette, onFatal);
 }
 
-export function createSoloRoom(mode: GameMode = 'solo'): SoloRoom {
+export function createSoloRoom(mode: GameMode = 'solo', difficulty: Difficulty = 'normal'): SoloRoom {
   const settings = loadSettings();
-  return new SoloRoom(settings.name || 'Player', settings.palette, mode);
+  return new SoloRoom(settings.name || 'Player', settings.palette, mode, difficulty);
 }

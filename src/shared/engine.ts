@@ -1,14 +1,12 @@
 import {
   ARCHITECT_LINE_TARGET,
-  BASE_GRAVITY_MS,
   COLS,
   COUNTDOWN_TICKS,
-  GRAVITY_RAMP_MS_PER_SEC,
+  DIFFICULTY_PROFILES,
   LOCK_DELAY_TICKS,
   MAX_LOCK_RESETS,
   MELD_BONUS,
   MELD_TARGET,
-  MIN_GRAVITY_MS,
   PING_COOLDOWN_TICKS,
   RIFT_WAVES,
   RIFT_WAVE_TICKS,
@@ -19,7 +17,16 @@ import {
   VERSUS_LINE_TARGET,
 } from './constants.js';
 import { KIND_NAMES, SHAPES, collides, pieceCells } from './pieces.js';
-import type { Action, Cell, GameEvent, GameMode, GameState, PlayerRuntime, Snapshot } from './types.js';
+import type {
+  Action,
+  Cell,
+  Difficulty,
+  GameEvent,
+  GameMode,
+  GameState,
+  PlayerRuntime,
+  Snapshot,
+} from './types.js';
 
 const LINE_SCORE = [0, 100, 300, 500, 800];
 
@@ -68,8 +75,9 @@ function pushEvent(state: GameState, event: Omit<GameEvent, 'id' | 'tick'>): voi
 }
 
 export function gravityTicks(state: GameState): number {
+  const profile = DIFFICULTY_PROFILES[state.difficulty];
   const seconds = (state.playTicks * TICK_MS) / 1000;
-  const interval = Math.max(MIN_GRAVITY_MS, BASE_GRAVITY_MS - seconds * GRAVITY_RAMP_MS_PER_SEC);
+  const interval = Math.max(profile.minMs, profile.baseMs - seconds * profile.rampMsPerSec);
   return Math.max(2, Math.round(interval / TICK_MS));
 }
 
@@ -240,10 +248,15 @@ function objectiveFor(mode: GameMode): number {
   }
 }
 
-export function createGame(mode: GameMode, seed = Date.now() >>> 0): GameState {
+export function createGame(
+  mode: GameMode,
+  seed = Date.now() >>> 0,
+  difficulty: Difficulty = 'normal',
+): GameState {
   const count = ONLINE_TWO_PLAYER.includes(mode) ? 2 : 1;
   const state: GameState = {
     mode,
+    difficulty,
     tick: 0,
     playTicks: 0,
     phase: 'countdown',
@@ -487,6 +500,7 @@ export function decodeBoard(encoded: string): (Cell | null)[] {
 export function toSnapshot(state: GameState, seqs: number[], paused = false, pauseMs = 0): Snapshot {
   return {
     v: 1,
+    difficulty: state.difficulty,
     tick: state.tick,
     playTicks: state.playTicks,
     phase: state.phase,
@@ -519,6 +533,7 @@ export function snapshotToState(snapshot: Snapshot, mode: GameMode): GameState {
   const count = snapshot.players.length;
   const state: GameState = {
     mode,
+    difficulty: snapshot.difficulty ?? 'normal',
     tick: snapshot.tick,
     playTicks: snapshot.playTicks,
     phase: snapshot.phase,

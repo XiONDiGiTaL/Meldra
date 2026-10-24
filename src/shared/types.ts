@@ -2,6 +2,15 @@ export type Phase = 'countdown' | 'playing' | 'won' | 'lost';
 
 export type GameMode = 'solo' | 'coop' | 'versus' | 'relay' | 'rift' | 'endless' | 'architect';
 
+/** Pace of gravity. Zen is a slower ramp, Normal is the designed pace, Hard starts quick. */
+export type Difficulty = 'zen' | 'normal' | 'hard';
+
+export const DIFFICULTIES: Difficulty[] = ['zen', 'normal', 'hard'];
+
+export function isDifficulty(value: unknown): value is Difficulty {
+  return value === 'zen' || value === 'normal' || value === 'hard';
+}
+
 /** Modes played alone in one tab. */
 export const SOLO_MODES: GameMode[] = ['solo', 'endless', 'architect'];
 /** Modes that need a room; the host selects the mode and the guest inherits it. */
@@ -68,6 +77,7 @@ export interface PlayerRuntime {
 
 export interface GameState {
   mode: GameMode;
+  difficulty: Difficulty;
   tick: number;
   /** Ticks spent in the playing phase; drives gravity ramping. */
   playTicks: number;
@@ -105,6 +115,7 @@ export interface PlayerMeta {
 
 export interface Snapshot {
   v: 1;
+  difficulty: Difficulty;
   tick: number;
   playTicks: number;
   phase: Phase;

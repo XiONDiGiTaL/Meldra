@@ -35,6 +35,13 @@ export const EN = {
   'home.sub':
     'One arena, two falling pieces. Finish rows together, duel for them, or take the board on alone.',
   'home.pickMode': 'Choose how to play',
+  'diff.label': 'Difficulty',
+  'diff.hint': 'Zen is gentler, Normal is the designed pace, Hard starts fast.',
+  'diff.zen': 'Zen',
+  'diff.normal': 'Normal',
+  'diff.hard': 'Hard',
+  'lobby.difficulty': 'Difficulty',
+  'game.pace': 'Pace',
   'home.soloTitle': 'Solo',
   'home.soloDesc': 'One board. Twelve rows. A quiet warm-up.',
   'home.togetherTitle': 'Together',
@@ -224,6 +231,9 @@ export const EN = {
   'help.mobileTitle': 'On a phone',
   'help.mobileBody':
     'Drag horizontally on the arena to slide your piece, or use the pads below it. Holding a pad repeats the action; the page does not scroll while you play.',
+  'help.difficultyTitle': 'Choose your pace',
+  'help.difficultyBody':
+    'Zen slows the fall and stretches the ramp so a first match stays calm. Normal is the designed pace. Hard opens at speed. In a room the host chooses the pace and the guest inherits it.',
   'help.modesTitle': 'Modes',
   'help.modesBody':
     'Solo clears twelve rows. Together and Rift are cooperative. Relay gives each player alternate pieces. Duel shares the arena but only your own finished rows score. Architect starts with a half-built stack; Endless has no target.',
@@ -316,6 +326,13 @@ export const TR: Record<I18nKey, string> = {
 
   'home.eyebrow': 'Düşen blok bulmacası',
   'home.pickMode': 'Nasıl oynayacağını seç',
+  'diff.label': 'Zorluk',
+  'diff.hint': 'Zen daha sakin, Normal tasarlanan tempo, Zor hızlı başlar.',
+  'diff.zen': 'Zen',
+  'diff.normal': 'Normal',
+  'diff.hard': 'Zor',
+  'lobby.difficulty': 'Zorluk',
+  'game.pace': 'Tempo',
   'home.soloTitle': 'Solo',
   'home.soloDesc': 'Tek tahta. On iki satır. Sakin bir ısınma.',
   'home.togetherTitle': 'Birlikte',
@@ -507,6 +524,9 @@ export const TR: Record<I18nKey, string> = {
   'help.mobileTitle': 'Telefonda',
   'help.mobileBody':
     'Parçayı kaydırmak için arenada yatay sürükle ya da alttaki tuş takımını kullan. Tuşu basılı tutmak eylemi tekrarlar; oyun sırasında sayfa kaymaz.',
+  'help.difficultyTitle': 'Temponu seç',
+  'help.difficultyBody':
+    'Zen düşüşü yavaşlatır ve hızlanmayı uzatır; ilk maç sakin kalır. Normal tasarlanan tempodur. Zor hızlı başlar. Odada tempoyu ev sahibi seçer, misafir onu devralır.',
   'help.modesTitle': 'Modlar',
   'help.modesBody':
     'Solo on iki satır temizler. Birlikte ve Yarık ortaktır. Sıra, parçaları oyuncular arasında değiştirir. Düello aynı arenayı paylaşır ama yalnızca kendi bitirdiğin satırlar sayılır. Mimar yarım bir yığınla başlar; Sonsuz’un hedefi yoktur.',
