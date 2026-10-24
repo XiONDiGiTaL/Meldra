@@ -7,7 +7,7 @@ import { drawPalettePreview } from '../render.js';
 import { difficultyKey } from '../view.js';
 import { controlGuide, copyText, el, isCoarsePointer, pill, toast } from '../ui.js';
 import type { LobbyPlayer } from '../../shared/protocol.js';
-import type { GameMode } from '../../shared/types.js';
+import { DIFFICULTIES, type Difficulty, type GameMode } from '../../shared/types.js';
 import { sfx } from '../audio.js';
 
 function modeInfo(mode: GameMode): { label: 'lobby.modeTogether' | 'lobby.modeVersus' | 'lobby.modeRelay' | 'lobby.modeRift'; desc: 'lobby.modeTogetherDesc' | 'lobby.modeVersusDesc' | 'lobby.modeRelayDesc' | 'lobby.modeRiftDesc' } {
@@ -182,6 +182,30 @@ export function renderLobby(api: AppApi, room: BaseRoom): { node: HTMLElement; d
         : t('lobby.startHint');
 
     const info = modeInfo(room.mode);
+    const paceValue = el('span', { class: 'pace-value', text: t(difficultyKey(room.difficulty)) });
+    const paceControl = isHost
+      ? el(
+          'div',
+          { class: 'seg', attrs: { role: 'group', 'aria-label': t('lobby.difficulty') } },
+          ...DIFFICULTIES.map((difficulty: Difficulty) =>
+            el('button', {
+              attrs: {
+                type: 'button',
+                'data-lobby-difficulty': difficulty,
+                'aria-pressed': String(room.difficulty === difficulty),
+              },
+              text: t(difficultyKey(difficulty)),
+              on: {
+                click: () => {
+                  api.updateSettings({ difficulty });
+                  room.setDifficulty(difficulty);
+                  sfx.ui();
+                },
+              },
+            }),
+          ),
+        )
+      : paceValue;
     const children: HTMLElement[] = [
       el(
         'div',
@@ -194,7 +218,7 @@ export function renderLobby(api: AppApi, room: BaseRoom): { node: HTMLElement; d
         'div',
         { class: 'pace-row' },
         el('span', { class: 'field-label', text: t('lobby.difficulty') }),
-        el('span', { class: 'pace-value', text: t(difficultyKey(room.difficulty)) }),
+        paceControl,
       ),
       el('div', { class: 'divider' }),
     ];
@@ -239,6 +263,7 @@ export function renderLobby(api: AppApi, room: BaseRoom): { node: HTMLElement; d
       status: room.status,
       self: room.selfId,
       role: room.role,
+      difficulty: room.difficulty,
     });
     if (!force && signature === lastSignature) return;
     lastSignature = signature;

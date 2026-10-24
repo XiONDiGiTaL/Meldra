@@ -13,9 +13,10 @@ and carried into both solo runs and online rooms.
 - **Difficulty selection:** a persisted Zen/Normal/Hard control on the main menu. Zen falls at
   1200 ms and only ramps to 380 ms, Normal keeps the original 850 → 150 ms curve, and Hard opens at
   320 ms and bottoms out at 110 ms. The pace applies to every mode and is remembered between visits.
-- **Online inheritance:** the host's pace travels in the welcome and lobby messages, appears in the
-  lobby's mode panel, and is used by the host's engine. Guests see the same pace in the lobby and in
-  the game HUD; protocol version is now 2 so a stale build cannot join with a different ruleset.
+- **Online inheritance:** the host can change the pace in the lobby before starting. It travels in
+  the welcome and lobby messages, is shown to both players, and is used by the host's engine. Guests
+  see the same pace in the lobby and the game HUD; protocol version is now 2 so a stale build cannot
+  join with a different ruleset.
 - **HUD and guide:** a Pace stat in the arena and a "Choose your pace" guide section in both
   languages.
 

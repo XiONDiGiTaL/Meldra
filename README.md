@@ -50,8 +50,9 @@ A single **Difficulty** control on the menu sets the pace for whatever you play 
 | **Normal** | 850 ms | 150 ms | The original designed pace. |
 | **Hard** | 320 ms | 110 ms | Fast from the first piece. |
 
-The choice is saved with the other preferences. In a room, the host's pace is shown in the lobby
-and used by the shared engine; the guest inherits it and sees the same value in the arena HUD.
+The choice is saved with the other preferences. In a room, the host can change the pace in the
+lobby before starting; it is shown to both players and used by the shared engine. The guest
+inherits it and sees the same value in the arena HUD.
 
 ### What makes Meldra different
 
