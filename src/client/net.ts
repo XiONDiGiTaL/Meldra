@@ -397,6 +397,7 @@ export abstract class BaseRoom {
   abstract setReady(ready: boolean): void;
   abstract setName(name: string): void;
   abstract setPalette(palette: string): void;
+  abstract setDifficulty(difficulty: Difficulty): void;
   abstract start(): void;
   abstract rematch(): void;
   abstract toLobby(): void;
@@ -771,6 +772,12 @@ export class HostRoom extends BaseRoom {
     if (this.game) this.broadcastSnapshot();
   }
 
+  setDifficulty(difficulty: Difficulty): void {
+    if (this.game) return;
+    this.difficulty = difficulty;
+    this.broadcastLobby();
+  }
+
   start(): void {
     const guest = this.guest;
     if (!guest || !guest.connected) {
@@ -1086,6 +1093,10 @@ export class GuestRoom extends BaseRoom {
     this.relay.send({ t: 'set', palette });
   }
 
+  setDifficulty(): void {
+    // The host owns the shared pace; a guest sees it in the lobby instead.
+  }
+
   start(): void {
     this.emit('toast', 'lobby.waitingHost');
   }
@@ -1225,6 +1236,10 @@ export class SoloRoom extends BaseRoom {
     applyAction(this.game, 0, action);
     this.broadcast();
   }
+  setDifficulty(): void {
+    // A solo room's pace is fixed when the room is created.
+  }
+
   setPaused(paused: boolean): void {
     if (this.game.phase === 'won' || this.game.phase === 'lost') return;
     if (this.paused === paused) return;
